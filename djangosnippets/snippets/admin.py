@@ -3,4 +3,3 @@ from snippets.models import Snippet
 
 
 admin.site.register(Snippet)
-

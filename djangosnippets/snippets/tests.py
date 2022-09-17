@@ -1,17 +1,22 @@
 from pydoc import resolve
-from django.test import TestCase
+from django.test import TestCase, Client, RequestFactory
 from django.http import HttpRequest
 from snippets.views import top, snippet_new, snippet_edit, snippet_detail
+from django.contrib.auth import get_user_model
+from snippets.models import Snippet
 
 
-class TopPageViewTest(TestCase):
-    def test_top_returns_200(self):
+UserModel = get_user_model()
+
+
+class TopPagewTest(TestCase):
+    def test_top_page_returns_200_and_expected_title(self):
         response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Djangoスニペット", status_code=200)
         
-    def test_top_returns_expected_content(self):
+    def test_top_page_uses_expected_template(self):
         response = self.client.get("/")
-        self.assertEqual(response.content, b"Hello World")
+        self.assertTemplateUsed(response, "snippets/top.html")
         
 class CreateSnippetTest(TestCase):
     def test_should_resolve_snippet_new(self):
